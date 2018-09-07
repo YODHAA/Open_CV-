@@ -1,0 +1,97 @@
+
+// Opencv project notes:
+-----------------------------
+Master Computer Vision with Opencv in Python:- 
+
+12 Mini projects:
+------------
+
+1. Making a live Drawing sketch of yourself.
+2. Shape Matching.
+3. Counting circles and ellipse.
+4. Finding Waldo
+5. Object Identification
+6. Face, Pedestrian and Car Detection.
+7. Live Face Swaps: (like MSQRD and SnapChat)
+8. Face Reader- Detect and count yawns
+9. Hand written digit Recoginition
+10. Facial Recoginition
+11. Ball Tracking
+12. Photo Restoration
+
+
+Lets start:
+
+Opencv: 3.1.0 doesnot support SIFT and SURF which support object detection.
+
+1. Installation
+==================
+
+1.1 Downloads and install Anaconda Python Packages.
+        www.continum.io/downloads
+1.2 Download and run opencv
+      : 3.1.0 version
+
+
+ >import sys
+print(sys.executable)
+  - too see the python file location
+
+>import os
+print (os.getcwd())
+
+ - to know the current jupyter notebook open in .
+
+
+Image formation:
+================
+ Using a small opening in the barrier called aperture we block most of the rays of light reducing the bluring on the film or sensor.
+this principle is called pinhole camera model.
+
+Controlling Image Formation with a lens:
+=========================================
+ both our eyes and camera uses an adaptive lens to control many aspects of image formations.
+Aperture Size: control amount of light enter (f-stops in camera)
+ 2.depth of the fields(Bokeh) in photography for foreground image.
+Lens Width: adjust focus distance.
+
+
+Images stored in Multi-dimensional Array:
+=========================================
+
+arr[0][0]=(x,y)+ (0/1/2)
+ to give 3d value of (x,y) location pixels value of color: (x,y,0/1/2) to denote its pixels color
+
+
+String Concatenation:
+-----------------------
+
+print ('Height Of the Image',int(input.shape[0]),'pixels')
+
+ OS Module:
+ ============
+
+ 1. os.system("cat /etc/services") : will print "1" on screen. but if you donot want to print on screen use :
+ >import subprocess
+ >x=subprocess.Popen('cat /etc/services').read()
+
+ 2. to print all os module functions:
+     > print(dir(os))
+   2.1  > print(os.getcwd()) : will show current working directory.
+   2.2  > os.chdir('path of changed folder location')
+        > print(os.getcwd()) 
+           to see the changed working directory folders.
+   2.3  >print(os.listdir())
+          will return the list of files in the current directory with each as string type.
+    2.4  >  will continue the vedios when we see it again......
+
+
+
+11 dec 2017 :
+---------------
+
+
+
+
+
+

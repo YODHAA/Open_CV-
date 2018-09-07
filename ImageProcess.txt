@@ -1,0 +1,507 @@
+Image Processing:
+---------------------
+
+Task-1:
+-----
+1.Perform the basic Image Processing task like reading + display an image.
+
+2.Detect and Identify objects of different colors and shapes by applying :
+     >color space property.
+     >image threshold techniques.
+
+ 3.Differentiate b/w objects on basis of color,shape,locations within a single image using techniques:
+        >contour detection and moments.
+
+Computer Vision:
+---------------- : A field that includes methods for acquring ,processing,analysing,and understanding images.
+
+
+Basic Programme Image form Camera:
+------------------
+1.Import OpenCV
+ >import numpy as np
+ >import cv2
+
+2.Get the Image
+  >img1=cv2.imread('image.png')
+
+Note: this command loads the image as a matrix , if we donnot use any flag then the image is read and returned as H*W*C h:height,w:width,c:channel
+if 'c' means it refers to three channels BGR color.
+if flag=0 => there is one channel only .
+
+ 3.Doo the processing
+  >img2=cv2.cvtColor(img1,cv2.COLOR_BGR2GRAY);
+
+ 4.Show output
+  >cv2.imshow('image',img2);
+
+ 5.close and exit
+  >cv2.waitKey(0)
+  >cv2.destroyAllWindows()
+
+Basic Programme for Vedio from Camera:
+--------------------------------------
+
+1.Import OprnCv
+ >import numpy as np
+ >import cv2
+ >cap=cv2.VedioCapture(0)
+
+2.Loop :
+     2.1 Get the Image.
+     2.2 Do the processing.
+     2.3 Show the output.
+       >while(true)
+         >ret,frame=cap.read()
+         >gray=cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY);
+         >cv2.imshow('frame',gray);
+         >if cv2.waitKey(1)==27
+               break;
+
+3.Close and exit.
+  >cap.release()
+  >cv2.destroyAllWindows()
+
+ Example of real programme-Motion Detection:
+ ------------------------------------------
+     1.Motion Detection:
+      >check for change in image.
+      >we need to find difference b/w two images.
+          literally> difference =substraction.
+       >OpenCv function- absdiff(img1,img2)
+
+ 2.Implementation:
+ ---------------------
+    >we can find the difference b/w the values of the same pixels(positions) b/w two images.
+    >therefore we need a gray scale.
+    >after we get two grey scale images use absdiff(img1,img2) to find the difference.
+
+    >show the output.
+
+ 3.Code for above Implentation Logic:
+ -------------------------------------
+
+ >import numpy as np
+ >import cv2
+ >cap=cv2.VedioCapture(0)
+ >ret,frame=cap.read()     // read vedio image capture
+ >gray_old=cv2.cvtColor(frame,cv2.COLOR_BGR2GRAY)
+ 
+ >while(True):
+   ret,frame=cap.read()
+   gray_new=cv2.cvtColor(frame,cv2.Color_BGR2GRAY)
+   img_diff=cv2.absdiff(gray_new,gray_old)
+   cv2.imshow('Result',img_diff)
+   gray_new=gray_old
+   if cv2.waitKey(1)==27
+      break;
+
+ >cap.release();
+ >cv2.destroyAllWindows()
+
+ here the problem is that computer vision will not judge the img_diff so its better to process the image more before seeing the result.
+
+
+ modified code now: Motion Detection
+ ------------------------------------
+
+ * dest<----cv2.cvtColor(source,cv2.COLOR_BGR2GRAY) : means this command takes a source file in BGR format and convert it to greyscale i.e.:
+   H*W*C to H*W format
+
+ * Finding size of image:
+ -------------------------
+ <image matrix>.shape :  if image is BGR or HSV image : 3 for BGR and 2 for greyscale
+
+ * Addressing a region of image:
+ ----------------------------------
+
+ img1[h1:,:w2,:] => will return all rows from h1 to the end and all columns from start to w2 and all channels.  
+
+Function Example:
+-----------------
+
+def get_split(img,n):
+    h,w=img.shape
+    h_del=h/n
+    w_del=w/n
+    sp_img=[]
+    for x in range (0,n):
+        for y in range (0,n):
+            sp_img.append(img[y*h_del:(y+1)*h_del,x*w_del:(x+1)*w_del])
+    return sp_img
+
+New Concepts Chapter:
+-----------------------
+
+>print img.shape : will print the h,c,channel
+
+>h,w,c=img.shape : will print on terminal
+
+>left_half=img[:,:(w/2),:] : will select all rows and half the columns and all channels(3)
+
+>print left_half.shape : print the new dimension.
+
+>#img[:,:,0]=0 #Blue channel of image
+img[:,:,1]=0 #Green channel of image
+img[:,:,2]=0 #Red channel of image
+
+will show only blue channel rest two are blocked.
+
+>chessboard: > numpy.zeros((),uint8)
+             >img[0:(h/2),200:400]=255 //means white
+
+>gray=cv2.convertColor(img sorce,conversion from to which format)
+ 
+>print gray.shape
+ -will not print the channel value as 3
+
+split color => RGB but 
+HSV color:  => hue + saturation +brightness 
+  hue: pure color 
+  saturation: dilution done to white light
+  value: value given in number given by it.
+
+>cv2.cvtColor(img,cv2.COLOR_BGR2HSV)
+  - will convert the image of BGR to HSV format.
+
+--------------------------
+Lesson 2 : Draw Figures
+------------------
+
+1. Draw certain images: like 
+ => lines,rectangles,circles,ellipse
+
+ 1.1 array craetion:
+         >dst=np.zeros((500,500),np.uint8)
+  1.2  line:
+       >cv2.line(src,pt1,pt2,color,thickness)
+      e.g: cv2.line(src,(10,10),(490,10),(255,0),5)
+  
+  1.3  cv2.rectangle(src,(20,20),(480,80),(0,255,0),3)
+
+  1.4  cv2.circle(src,centre,raidus,color,thickness)
+      e.g: cv2.circle(src,(150,150),50,(0,0,255),-1)
+
+  1.5  cv2.ellipse(src,centre,axes,rotation,startAngle,stopAngle,color,thickness)
+      e.g: cv2.ellipse(src,(250,200),(200,100),0,0,180,(100,100,0),3)
+    here :
+           src:source
+           (250,200):centre of ellipse
+           (200,100):semi major and minor axis
+           (0): rotation
+           (0):start angle
+           (180):ending angle of ellipse
+           (100,100,3):color of ellipse
+           3 :thickness
+
+   e.g:
+                                          
+ img = np.zeros((500,500,3), np.uint8)
+            3 : => three channels 
+cv2.line(img,(10,10),(490,10),(255,0,0),5)
+cv2.rectangle(img,(20,20),(480,80),(0,255,0),3)
+cv2.circle(img,(150,150), 50, (0,0,255), -10) 	# Filled
+cv2.circle(img,(350,150), 50, (0,0,255),  10)    # Outline
+cv2.ellipse(img,(250,200),(200,100),0,0,180,(0,0,255),3)
+
+
+Morphing Operations:
+-----------------------
+ these are simple operations based on the image shape:
+ - generally performed on binary images.
+ - one original image + one structuring element (kernel) => which decide nature of operations.
+ - Erosion , Dilations,Opening,Closing,Gradient etc.
+ - these are used generally for these purposes:
+ 1.Removing noise
+ 2.Isolation of individual elements and joining  disparate elements in an image.
+  3.Finding of intensity bumps or holes in an image
+
+
+ 1. Erosion:
+ -------------
+   -its erodes away the boundaries of foreground objects.(tries to keep white as foreground)
+
+   - white as foreground , black as background.
+   - so using erosion the thickness of foreground object decreases 
+
+   e.g:
+        >img=cv2.imread('col.jpg',0)
+        >kernel=np.ones((5,5),uint8)
+        >erosion=cv2.erode(img,kernel,iterations=1)
+
+  2.Dilations:
+  -------------
+  its opposite of erosion,it increases the foreground image using  this techniques.
+  - its generally followed by erosion: which removes the foregroung noise but shrink the object so requires diluton to make object comes to original size.
+
+  >dilation=cv2.dilate(img,kernel,iteration=1)
+
+  3.Opening:
+  -----------
+  -its means erosion then diluton other combo name.
+ - removes the noise from background images.
+  >opening=cv2.morphologyEx(img,cv2.MORPH_OPEN,kernel)
+
+4.Closing:
+-------------
+ 
+ -it means Dilution then erosion combo name.
+ - close the small holes inside the foreground image .
+
+
+ >closing=cv2.morphologyEx(img,cv2.MORPH_CLOSE,kernel)
+
+
+ 5.Morphological Gradient:
+ --------------------------
+
+ -its the difference between the dilation and erosion of an image.
+
+ gradient=cv2.morphologyEx(img,cv2.MORPH_GRADIENT,kernel)
+
+ 6.Top Hat:
+ -----------
+ its difference b/w :
+   input image  and opening of the image.
+
+>tophat=cv2.morphologyEx(img,cv2.MORPH_TOPHAT,kernel)
+
+7.Black Hat:
+-------------
+Its difference b/w :
+  closing of input image and input image
+
+ >blackhat=cv2.morphologyEx(img,cv2.MORPH_BALCKHAT,kernal)
+
+
+ Getting the structural Elemnt:
+ ------------------------------
+
+ cv2.getStructuringElement(): to get desired structure.
+
+ >cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
+  - will create a array of 1's of 5*5 size
+
+ >MORPH_ELLIPSE,MORPH_CROSS,
+
+
+ALL these used in binary or grayscale images.
+
+- Thin white lines in foreground dissapaers in Erosion.
+-  incresae in white foregroung pixels in dilution.
+- opening is dilution of eroded image means its increase the left white foreground image.(passed the erosion image)
+
+- closing is erosion of dilated image,so dilation image passed in closing source image. 
+  => means original image first extended => then we use erosion => we get similar to original image.
+
+ Smoothing Image :
+ ---------------------
+ Its also called blurring: simple and frequently used image processing operations.
+
+ -we use filters : as a window of coeffieients sliding accross the image, multiplying the coeffient of window with pixel value, sum of all values assigned to central pixel(anchor) in window.
+
+ common filters:
+ -----------
+  1. normailsed box filter
+  2. Gaussian filter
+  3.median filter
+  4.bilateral filter
+  in bilateral we not remove noise but reduce it and preserve the image unlike other three where we remove the noise.
+  - it takes longer time to do so but.
+
+ > dst=cv2.blur(src,size)
+ > dst=cv2.GaussianBlur(src,ksize,0)
+ > dst=cv2.medianBlur(src,ksize)
+
+ dst:destination image
+ dsize: must be odd (size of filter)
+
+ e.g:
+ >blur1=cv2.blur(img,(5,5))
+ >blur2=cv2.GaussianBlur(img,(5,5),0)
+ >blur3=cv2.medianBlur(img,5)
+
+Thresholding:
+-------------------
+its used basically when we know the range in which the pixel value we need exists.and want to cut out the rest of image.
+
+>ret,dst=cv2.threshold(src,thresh,maxval,type)
+   type: THRESH_BINARY, THRESH_BINARY_INV,THRESH_TRUNC,
+           THRESH_TOZERO,THRESH_TOZERO_INV 
+
+ code:
+  > img=cv2.imread('lion.jpg')
+  >gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+  >ret,thresh1=cv2.threshold(gray,150,255,cv2.THRESH_BINARY)
+  >cv2.imshow('image-1',thresh1)
+  >cv2.imshow('img',img)
+
+- here we are constrained to use gray scale.
+
+  Masking:
+  --------
+ - it uses the both upper and lower threshold on all channel .its not constrained to gray scale image.
+
+ >mask=cv2.inRange(hsv,lower,upper)
+
+ >dst=cv2.bitwise_and(src1,src2,dst,mask)
+
+e.g:
+
+lower = np.array(param1)    ## Convert the parameters
+    upper = np.array(param2)
+    mask  = cv2.inRange(frame, lower, upper)
+    res   = cv2.bitwise_and(frame, frame, mask= mask)   
+
+   -note mask: will choose only those pixels which are in given param range 
+   - res:it will convert the param first parametere value and makes rest as zero as we got only blue color in res window of the image of the mask window has taken.
+
+
+ Image Transformation:
+ --------------------------
+
+      scaling: used to scale or change the size of the image.
+
+     > dst=cv2.resize(src,dsize,interpolation)
+       
+interpolation :  the algo used to resize.
+        1. INTER_NEAREST - a nearest neighbour interpolation.
+        2. INTER-LINEAR - a bilinear interpolation (used by default)
+        3. INTER_AREA - resampling using pixels area relations.
+        4. INTER_CUBIC - a bicubic interpolation over 4*4 nieghbour.
+        5. INTER_LANCZOS4 - a lanczos interpolation over  8*8 pixels in neighboured.
+
+  e.g:
+       >h,w,c=src.shape
+       > dst=cv2.resize(src,(2*w,2*h),interpolation=cv2.INTER_CUBIC)
+
+
+Geo-Transformation:
+---------------------
+     
+      1.Translation 
+      2.Rotation
+
+ 1. Translational Matrix: [ 1 0 tx]
+                          [0  1  ty]
+
+ 
+   > img=cv2.imread('lion.jpg')
+   > r,c,c=img.shape
+   >  
+   > M=np.float32([[1,0,100],[0,1,50]]) 2*2 aray made
+   >print M 
+   >
+   > M=cv2.getRotationMatrix2D((cols/2,rows/2),90,1)
+   // axis of rotation , angle of rotation ,  scaling 
+
+   >dst=cv2.warpAffine(img,M,(cols,rows)) 
+        // image , matrix , rowws ,columns 
+
+Image Processing-2 :
+-----------------------
+  
+    Perspective Transform:
+    ------------------------
+      1.
+        >cv2.circle(img,(30,111),5,(0,0,255),-1)
+        >cv2.circle(img,(34,326),5,(0,0,255),-1)
+        >cv2.circle(img,(561,53),5,(0,0,255),-1)
+        >cv2.circle(img,(554,381),5,(0,0,255),-1)
+
+       > pts1=np.float32([[30,111],[34,326],[561,53],[554,381]])
+       > pts2=np.float32([[0,0],[0,450],[600,0],[600,450]])
+
+        > M=cv2.getPerspectiveTransform(pts1,pts2)
+
+       > dst=cv2.warpPerspective(img,M,(600,450))
+
+
+ Contours:
+ ----------
+
+        to draw the code over entire contour we have to write the following code:
+
+       > gray=cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+       
+       > ret,thresh=cv2.threshold(gray,127,255,0)
+      
+       > image,contours,hierarchy=cv2.findContours(thresh,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
+       
+       > cv2.drawContours(img,contours,-1,(0,0,255),5)
+          
+// lets i=2 as per choice of the contour
+       > print len(contours)
+       >print "Area= ",cv2.contourArea(contours[i])
+       >print "Peremeter= ",cv2.arcLength(contour[i])
+
+       >M=cv2.moments(contours[i])
+       > cx=int(M['m10']/M['m00'])
+       > cy=int(M['m10']/M['m00'])
+
+       >print "Centroid= ",cx,cy
+       >cv2.circle(img,(cx,cy),5,(0,0,255),-1)
+       >cv2.imshow('image',img)
+
+  will show the image with entire as green contour and contour 2 area,perimeter and centroid calculated.
+
+  Vedio Captured Counturing:
+  --------------------------
+
+    >cap=cv2.VideoCapture(0)
+    >
+    >while(1):
+    > 
+    > ret,img=cap.read()
+    >gray =cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    > ret,thresh=cv2.threshold(gray,20,255,0)
+    >cv2.drawContours(img,contours,-1,(0,255,0),3)
+
+    >cv2.imshow('image',img)
+
+   will show the vedio captured contours with 
+    - first convert the RGB to Gray scale conversion.
+    - put some limit over the image to which we want to
+      see the image as threshold value.
+    - draw contours then above the values of pixels found in the image. if we increase the threshold value we get only the portion of image that are more whiter only inside the contours.
+
+Finding the Moments of the object:
+-----------------------------------
+  
+    1.  
+       read the image.
+       convert to gray scale
+       write the threshold value for the gray image
+       find the moments of the given threshold image
+       find the hu invariant moments
+
+      >ret,thres=cv2.threshold(gray,127,255,cv2.THRESH_BINARY)
+
+      >M=cv2.moments(th,True)
+      >print M
+
+      >Hu=cv2.HuMoments(M)
+      >print Hu
+
+  
+  Task:1
+--------------
+
+Goal:  1. Detect and identify objects of different colors 
+           and shapes by applying color space properties and image thresholding techniques.
+
+       2• Differentiate between objects on the basis of color, shape and their location within the image using a technique such as contour detection and moments
+
+
+
+
+   Task:2
+-------------
+
+Goal: 1.Identify the color of objects.
+      2. Identify the position of object in the frame.
+      3.Overlays another image with a transparent background on the basis one at a time.
+      
+
+
+

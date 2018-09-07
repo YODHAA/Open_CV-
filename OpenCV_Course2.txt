@@ -1,0 +1,287 @@
+
+                      10 jan 2018 
+                      =============
+
+1.  grey_image=cv2.cvtColor(image,cv2.COLOR_BGR2GRAY);
+           or
+    grey_image=cv2.imread("images.png",0);
+ -it increases the noise reduction and increases image processing speed.
+
+2.  opencv stores in BGR format but memory stores in RGB format.
+
+3.  1.RGB : an additive color model as generates many color on mixing.
+     having different intensities and brightness with 8 bit storage for each color.
+
+    2.HSV : Hue/Saturation/and value or brightness is way to represent color in way human sees colors.
+           stores color in cylindrical forms.
+           hue:0-179 
+           saturation: 0-255
+           value: 0-255 
+       useful in color segementation: used for color ranges filters 
+          to percieve specific filters.
+
+    3. color filtering ranges:
+          1. red : 15- 165 
+          2. green: 45 -75 
+          3. blue: 90- 120 
+
+    4.  look at the value (individual color ) for first cordinate pixels:
+            b,g,r=image[0,0]
+            print b,g,r
+
+     5. print image.shape in RGB and Gray format gives 3d and 2d values of size specification.
+
+     6. print image[10,50] : will give one value in gray scale image 
+            it means either pixel is white  or black . 
+
+     7. looked at printing original,hsv converted image ,
+         only hue image , only saturation image, only value image.
+
+     8. visualising individual component in RGB:
+          b,g,r = cv2.split(image_array)
+
+         cv2.imshow("red",r) 
+       then merge diffenrt components indexs color:
+         merged=cv2.merge([b,g,r])
+        then amplified blue components:
+         merged=cv2.merge([b+100],r,g)
+
+     9.  now the cool part is:
+          b,g,r=cv2.split(image)
+          zeros=np.zeros(image.shape[:2],dtype="uint8")
+          will create a  2*2 arary with zeroes filled of integer value.
+        
+         to see the pure red RGB color: 
+           cv2.imshow("red",cv2.merge([zeros,zeros,r]));
+        will show the amplified image with red color.
+
+     10. histogram=cv2.calcHist([image],[0],None,[256],[0,256]);
+          to show the plot we use,
+          plt.hist(image.ravel(),256,[0,256]);
+          plt.show();
+
+          to flaten the 2d array to 1 d array use ravel function().
+
+      11. # to draw the polygons
+
+  1. pts=np.array([[10,50],[400,50],[90,200],[50,500]],np.int32)
+  2. pts=pts.reshape((1,1,-2))
+  3. cv2.polylines(image,[pts],True,(0,0,255),3)
+  
+
+     12.  cv2.putText(image,"Hello World!",(75,200),cv2.FONT_HERSHEY_COMPLEX,2,(100,170,0),3)
+
+   # starting text loc, font format,2:font size,color of text,thickness of text. 
+
+      13. Image Manipulations:
+          ====================
+
+          1.Transformations : affine and non affine
+          2.Translation
+          3.Rotations
+          4.Scaling,resizing,interpolation
+          5.Image pyramid.
+          6.Cropping
+          7.Arthimetic Operations
+          8.Bitwise Operations and masking
+          9.Convolutions and Blurrings
+          10.Sharpenings
+          11.Thresholdings and Binarization
+          12.Dilations,erosions,opening and closing.
+          13.Edge detection & image gradient
+          14.Perspective & Affine Transformations
+          15.Live sketch.
+
+
+
+   14. 1. we use transformations when we capture an image from different views and want the correct image out of that.
+        we use transformation to correct distortion or perspective issue enacted upon the image captured.
+
+        Affine : lines maintain the parallelism while not so in non-affine transformations.
+        but in non-affine colinearity maitained means: all points remain on that lines only .
+
+
+        2. Tranlation:
+        ------------
+         cv2.wrapAffine() : method to implement translation.
+         
+       3. Rotation :
+          -------------
+
+           rotation matrix :  [ cos0 -sin0]
+                              [sin0   cos0]
+           its function allows you to scale + rotate at the same time.
+           > cv2.getRotationMatrix2D(rotation_centre_x,rotation_center_y,angle of rotation,scale);
+
+
+       4. interpolation:
+          -------------
+
+           method of constructing new data points within the range of a discrete set of known points.
+
+           1. cv2.INTER_AREA : down sampling
+           2. cv2.INTER_NEAREST : fastest
+           3. cv2.INTER_LINEAR : zooming or up sampling
+           4. cv2.INTER_CUBIC :better 
+           5. cv2.INTER_LANCZOS4 : best 
+
+         > cv2.resize(image,dsize(output image size),xscale,yscale,interpolation)
+
+        5. Pyrammiding :
+         =------------
+
+          refers image enlarging and shrinking images.
+          > uses mainly in object detection that scales images each times it look for an object.
+
+          >smaller=cv2.pyrDown(image)
+          >larger=cv2.pyrUp(image)
+
+         6. Cropping Images:
+         - --------------------
+
+            refers to extracting segement of the image .
+
+         7. Arithmetic Operations:
+              ---------------------
+
+            used to add or substract the intensities of the image.
+
+            > cv2.bitwise_and , cv2.bitwise_or, cv2.bitwise_xor , cv2.bitwise_not
+
+               cv2.bitwise_not and -1 opposite things ....
+
+         8. Convolutional and Blurring :
+            -----------------------------
+
+             its the mathematical operation performed on the two functions producing third function 
+              which is totally modified version of original function .
+
+             output image= Image * function (kernal size) => kernal size means that size over which we run our manuplating 
+              function over the image .
+
+           Blurring : its an operation when we average the pixels within a region .(kernal)
+
+                       >cv2.filter2D(image,-1,kernel)
+
+               2. Averaging : its done by convolving the image with a normalized box filter.
+                             - this takes the pixels under the box and replaces the central element .
+                             - box size must be odd + positive 
+
+                        >blur=cv2.blur(image,(3,3))
+
+              3. Gaussian Filter:
+                --------------------
+                            > gauss_filter=cv2.GaussianBlur(image,(7,7),0)
+
+              4. Median Filter:
+                ---------------
+
+                        takes median of all the filters under the kernal arae and central element replaced by the 
+                         median element.
+
+                     >median=cv2.medianBlur(image,5)
+
+              5. Bilateral Filter:
+                ----------------------
+                          bilateral=cv2.bilateralFilter(image,9,75,75)
+                          >cv2.imshow("bilateral",bilateral)
+
+
+             6. Best ( Image De-noising and Non-Local means denoising):
+                       ------------------------------------------------
+              parameter after none are : h  filter strength , next three are h for color component  
+                      > dst=cv2.fastNlMeansDenoisingColored(image,None,6,6,7,21)
+                      > cv2.imshow(" fast means denoising ", dst)
+
+                 Note: cv2.fastNlMeansDenoising() - work with a single grey scale images.
+                        cv2.fastNlMeansDenoisingColored() - work with colored image 
+                        cv2.fastNlMeansDenoisingMulti() - greyscale images in sequence
+                        cv2.fastNlMeansDenoisingColoredMulti()  -  colored images in sequence
+
+
+
+        9. Sharpening : 
+          ---------------
+
+                 its opposite of blurring , it emphasisis edges in the image .
+
+                   kernal = [ -1  -1  -1 ]
+                            [  -1  9  -1]
+                            [ -1   -1  -1]
+
+                     thus multiply by factor so retain sum to one : retain same brightness as original image.
+
+
+        10. Threshlding :
+            --------------
+
+             convert an image to binary form . white / balck color 
+
+                >cv2.threshold(image,THRESHOLD VALUE, MAX VALUE ,THRESHOLD TYPE)
+
+              types of threshold:
+              -----------------
+                10.1 cv2.THRESH_BIANRY  
+                10.2 cv2.THRESH_BINARY_INV
+                10.3 cv2.THRESH_TRUNC
+                10.4 cv2.THRESH_TOZERO
+                10.5  cv2.THRESH_TOZERO_INV
+              note : image nned to be converted to greyscale before thresholding .
+
+            
+            better way of thresholding are:        images with changing light intensity 
+            ------------------------------------
+
+              Adaptive Thresholding:   OSTU thresholding methods
+              ----------------------- 
+                   1. Simple threshold requires us to provide the threshold values.
+                   2. Adaptive takes away this hurdle .
+                   3.  
+    >cv2.aptiveTHRESHOLD(image,Max Value,Adaptive Type,Threshold Type,Block Size,Constant- subtracted from mean)
+          note : 
+                   block size should be odd number.
+
+                1.1  ADAPTIVE_THRESH_MEAN_C : based on neighbourhood of pixels .
+                1.2  ADAPTIVE_THRESH_GAUSSIAN_C : weighted sum of neighbourhood pixels under the GAUSSIAN window.
+                1.3  THRESH_OSTU : assume two gray scale peak in histogram of image , so find optimal vales to 
+                                       seperate the two paeks.
+
+
+         11. Dilation and Erosion:
+             ----------------------
+
+               Operations in mathematical morphology: 
+                    1. Dilation : add pixels to the boundaries of object in an image.
+                    2. Erosion : removes pixels at the boundary of the image.
+                    3. Opening : Erosion + Dilution
+                    4. Closing : Dilution + Erosion 
+
+         12. Edge Detection and Intensity Variant :
+             ------------------------------------
+
+               Edges can be defined as sudden change (discontinutuies) in an image and they can encode just as 
+               much information as pixels.
+
+             basic edge detection algorithmns:
+
+                    1. Sobel  : to emphasis horizontal + vertical edges.
+                    2. Laplacian : Get all orientations.
+                    3. Canny :Optimal due to low error rates well defined edges and accurate detection.
+
+                Canny Algo :
+                -------------
+                    1.1 Applies Gaussian Bluring 
+                    1.2 Finds the intensity Gradient of the image.
+                    1.3 Applied non-maximum suppression (remove pixels that are not edges)
+                    1.4  Hysteris - Applies Threshold ( pixel within upper and lower bound consider edge.)
+
+                    canny=cv2.Canny(image,40,120)
+                     cv2.imshow("Canny",canny)
+              here the value above 120 considered as edge while below 40 as non-edge gradient value of the pixel .
+
+          13. Perspective Of non-affine:
+              ---------------------------
+ 
+             affine transformation requires 3 boundary points, while non-affine requires 4 boundary points.
+
+  

@@ -1,0 +1,60 @@
+
+                      26 jan 2018 
+                      =============
+
+
+chapter 4:
+==========
+        
+        1. Image Segementation:
+          =========================
+
+           Partioning image into different regions.
+
+            topic:
+            ------
+              1. Understanding contours.
+              2. sorting contour by size or left to right
+              3. Approx contours and find their convex hull
+              4. matching contours shapes.
+              5. Identifying shapes
+              6. Line detection,Circle detection , Blob detection.
+              7. Counting circles and ellipse.
+
+
+         Contours:
+         ----------
+             are continiuous lines or curves that bounds or covers the full boundary of an object in an image.
+
+             mainly used in: Object Detection , Shape Analysis 
+
+             Points:  first image display , gray scale, contours function
+                      _,contours,hierarchy=cv2.findContours(edges.copy(),cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+
+                      opencv stores contours in a list of list : print(str(len(contours))) : gives total list of 2d contous formed.
+
+                      >cv2.CHAIN_APPROX_SIMPLE: to get boundary contours points( start and end points of line)
+                      >cv2.CHAIN_APPROX_NONE: to get all boundary contours points.
+
+                      Hierarchy In contours:
+                      ---------------------
+                       >cv2.RETR_LIST - retrieve all contours.
+                       >cv2.RETR_EXTERNAL - Retrieves external or outer contours only 
+                       >cv2.RETR_COMP - retrieve all 2 level hierarchy
+                       >cv2.RETR_TREE - retrieves all in full hierarchy
+
+                       Hierarch stored in format: [current, next ,child ,parent]
+
+                see more on py_contours_hierarchy.html 
+
+         2. Sorting Contours:
+           ------------------
+                   1. sorting by area. => extract large arae contours, remove noise contours.
+                   2. sorting by spatial position. => (using centroid) ,sort from left to right, process image in specific order.
+
+          
+         3. Approximating Contours:
+           -------------------------
+
+                     
+               
